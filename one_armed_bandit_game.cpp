@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-#include "enarmad_bandit.h"
+#include "one_armed_bandit_game.h"
 
 using namespace std;
 
