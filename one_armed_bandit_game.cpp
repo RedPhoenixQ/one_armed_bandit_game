@@ -16,7 +16,7 @@ int main() {
 
     // Main game loop 
     while (true) {
-        int bet = getBetFromUser();
+        int bet = getBetFromUser(account);
         rollField(game_field);
         WiningRows wining_rows = countWinningRows(game_field);
         int winings = calculateWinings(bet, wining_rows.total);
@@ -25,9 +25,7 @@ int main() {
         displayWinnings(winings, account);
 
         if (!askQuestion("Do you want to continue?"))
-        {
             return 0;
-        };
     }
 }
 
@@ -52,10 +50,14 @@ int getDepositFromUser() {
     }
 }
 
-int getBetFromUser() {
+int getBetFromUser(int account) {
     int bet;
-    askQuestion("How much do you want to bet?", bet);
-    return bet;
+    while (true) {
+        askQuestion("How much do you want to bet?", bet);
+        if (bet <= account) 
+            return bet;
+        invalidInput("you only have " + to_string(account) + " in your account");
+    }
 }
 
 void rollField(char gf[3][3]) {
@@ -160,7 +162,7 @@ void displayField(char gf[3][3], WiningRows wining_rows) {
       --- ---/---
      | O | X | O |
       ---/--- ---
-     | X + X + X |
+     | X-|-X-|-X |
       --- --- ---
 
       --- --- ---

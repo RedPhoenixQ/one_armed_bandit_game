@@ -11,7 +11,7 @@ struct WiningRows {
 };;
 
 int getDepositFromUser();
-int getBetFromUser();
+int getBetFromUser(int);
 void rollField(char[3][3]);
 WiningRows countWinningRows(char[3][3]);
 int calculateWinings(int, int);
