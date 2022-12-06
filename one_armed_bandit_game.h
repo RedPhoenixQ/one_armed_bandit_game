@@ -11,14 +11,13 @@ struct WiningRows {
 };;
 
 int getDepositFromUser();
-int getBetFromUser(int);
+int getBetOrQuitFromUser(int&);
 void rollField(char[3][3]);
 WiningRows countWinningRows(char[3][3]);
 int calculateWinings(int, int);
 void displayField(char[3][3], WiningRows);
 void displayAccount(int);
 void displayWinnings(int, int);
-void askQuestion(string, string &);
-void askQuestion(string, int &);
-bool askQuestion(string);
+void askQuestion(string, string&);
+void askQuestion(string, int&);
 void invalidInput(string = "please try again");

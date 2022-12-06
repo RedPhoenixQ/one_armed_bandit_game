@@ -10,22 +10,25 @@ const string BOLD = "\e[1m",
              ENDL = "\n";
 
 int main() {
+    // initialize the rand() function at the start of the program
+    srand(time(0));
     char game_field[3][3];
     int account = getDepositFromUser();
     displayAccount(account);
 
     // Main game loop 
     while (true) {
-        int bet = getBetFromUser(account);
+        int bet = getBetOrQuitFromUser(account);
+        if (bet == 0)
+            return 0;
         rollField(game_field);
         WiningRows wining_rows = countWinningRows(game_field);
         int winings = calculateWinings(bet, wining_rows.total);
-        account += winings;
+        // Only add the winnings to account if you won something, the "loses" (negative numbers) will be displayed by displayWinings()
+        if (winings > 0)
+            account += winings;
         displayField(game_field, wining_rows);
         displayWinnings(winings, account);
-
-        if (!askQuestion("Do you want to continue?"))
-            return 0;
     }
 }
 
@@ -50,18 +53,35 @@ int getDepositFromUser() {
     }
 }
 
-int getBetFromUser(int account) {
+int getBetOrQuitFromUser(int &account) {
+    string input;
     int bet;
     while (true) {
-        askQuestion("How much do you want to bet?", bet);
-        if (bet <= account) 
+        askQuestion("How much do you want to bet? [number OR [q]uit]", input);
+
+        try {
+            bet = stoi(input);
+        }
+        catch(...) {
+            // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
+            if ((input == "quit" || input == "Quit") || (input.length() == 1 && (input[0] == 'q' || input[0] == 'Q')))
+                return 0;
+            else
+                continue;
+        }
+        // If bet is smaller than account, remove bet from account to "spend" the money
+        if (bet <= account) {
+            account -= bet;
             return bet;
-        invalidInput("you only have " + to_string(account) + " in your account");
+        }
+        if (bet <= 0)
+            invalidInput("you can't bet 0");
+        else 
+            invalidInput("you only have " + to_string(account) + " in your account");
     }
 }
 
 void rollField(char gf[3][3]) {
-    srand(time(0));
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
             switch (rand() % 3) {
@@ -122,39 +142,50 @@ int calculateWinings(int bet, int wining_rows) {
 }
 
 void displayField(char gf[3][3], WiningRows wining_rows) {
-    cout << " --- --- ---" << endl;
+    string current_row;
     string row_divider;
     string column_divider;
     for (int x = 0; x < 3; x++) {
-        row_divider = " ";
         column_divider = " | ";
         if (wining_rows.rows[x])
             column_divider = "-|-";
-    
+        current_row = "";
+        row_divider = " ";
+        // For every row, build the current_row and row_divider with the necessary connecting versions
         for (int y = 0; y < 3; y++) {
-            if (wining_rows.columns[y] && x != 2) {
+            // Connect vertically if the column is a win and it's not the top row_divider
+            if (wining_rows.columns[y] && x > 0) {
                 row_divider += "-|-";
             } else {
                 row_divider += "---";
             }
 
-            if (wining_rows.down && ((y == 0 && x == 0) || (y == 1 && x == 1))) {
+            // If there is a wining diagonal, but a / or \ in the necessary locations to connect the diagonals
+            /*
+            Would add this to the center of the field
+            " " "/"
+            "/" " "
+            */
+            if (wining_rows.down && ((y == 0 && x == 1) || (y == 1 && x == 2))) {
                 row_divider += '\\';
-            } else if (wining_rows.up && ((y == 1 && x == 0) || (y == 0 && x == 1))) {
+            } else if (wining_rows.up && ((y == 1 && x == 1) || (y == 0 && x == 2))) {
                 row_divider += '/';
             } else {
                 row_divider += ' ';
             }
 
             if (y == 0) {
-                cout << "| ";
+                current_row += "| ";
             } else {
-                cout << column_divider;
+                current_row += column_divider;
             }
-            cout << gf[x][y];
+            current_row += gf[x][y];
         }
-        cout << " |" << endl << row_divider << endl;
+        // Print the row divider and then the current row on a new line
+        cout << row_divider << endl << current_row + " |" << endl;
     }
+    // Close the game field with a row divider
+    cout << " --- --- --- " << endl;
 
     /*
       --- --- ---
@@ -181,7 +212,7 @@ void displayAccount(int account) {
 
 void displayWinnings(int winings, int account) {
     string won_lost = "won";
-    if (winings < 0) {
+    if (winings <= 0) {
         won_lost = "lost";
         // Invert the winings variable so that "-XXX" isn't shown to the user
         winings = -winings;
@@ -204,25 +235,6 @@ void askQuestion(string question, int &output) {
             break;
         } catch (...) {
             invalidInput("please input a number");
-        }
-    }
-}
-
-bool askQuestion(string question) {
-    question += " [y/n]";
-    string answer;
-    while (true) {
-        askQuestion(question, answer);
-        if (answer.length() > 1) {
-            invalidInput();
-        }
-        else if (answer[0] == 'n') {
-            return false;
-        }
-        else if (answer[0] == 'y') {
-            return true;
-        } else {
-            invalidInput();
         }
     }
 }
