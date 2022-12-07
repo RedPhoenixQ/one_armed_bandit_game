@@ -67,7 +67,7 @@ int getBetOrQuitFromUser(int &account) {
         }
         catch(...) {
             // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
-            if ((input == "quit" || input == "Quit") || (input.length() == 1 && (input[0] == 'q' || input[0] == 'Q')))
+            if (input == "quit" || input == "Quit" || input == "q" || input == "Q")
                 return 0;
             else
                 continue;
