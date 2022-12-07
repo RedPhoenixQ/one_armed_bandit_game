@@ -35,7 +35,10 @@ int main() {
 int getDepositFromUser() {
     int choice;
     while (true) {
-        askQuestion("How much money do you want to deposit?: " + ENDL + "  [1] 100kr" + ENDL + "  [2] 300kr" + ENDL + "  [3] 500kr", choice);
+        askQuestion("How much money do you want to deposit?: " + ENDL + 
+                    "  [1] 100kr" + ENDL + 
+                    "  [2] 300kr" + ENDL + 
+                    "  [3] 500kr", choice);
 
         // Translate input list number to deposit value
         switch (choice) {
@@ -82,6 +85,7 @@ int getBetOrQuitFromUser(int &account) {
 }
 
 void rollField(char game_field[3][3]) {
+    // Generata a random number for every index in game_field and choose one of three options based on the random number to become the value at that index
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
             switch (rand() % 3) {
@@ -102,6 +106,7 @@ void rollField(char game_field[3][3]) {
 
 WiningRows countWinningRows(char game_field[3][3]) {
     WiningRows wining_rows;
+    // Only loops three times since the game_field is 3x3 in size, which means we can check one row amd one column on every iteration thus we only need three iterations
     for (int i = 0; i < 3; i++) {
         // Check rows
         if (game_field[i][0] == game_field[i][1] && game_field[i][0] == game_field[i][2]) {
@@ -129,7 +134,7 @@ WiningRows countWinningRows(char game_field[3][3]) {
 }
 
 int calculateWinings(int bet, int wining_rows) {
-    // Only the options up until five are checked because those are the only possible options unless the entire game field is the same symbol, which would be handeled  by the default case
+    // Only the options up until six are checked because those are the only possible options unless the entire game field is the same symbol, which would be handeled by the default case
     switch (wining_rows) {
     case 0: return -bet;
     case 1: return bet * 2;
