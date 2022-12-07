@@ -2,6 +2,10 @@
 
 using namespace std;
 
+const string BOLD = "\e[1m",
+             NOBOLD = "\e[0m",
+             ENDL = "\n";
+
 struct WiningRows {
     bool rows[3] = {false, false, false};
     bool columns[3] = {false, false, false};

@@ -5,10 +5,6 @@
 
 using namespace std;
 
-const string BOLD = "\e[1m",
-             NOBOLD = "\e[0m",
-             ENDL = "\n";
-
 int main() {
     // initialize the rand() function at the start of the program
     srand(time(0));
