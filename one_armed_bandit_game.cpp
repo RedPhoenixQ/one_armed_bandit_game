@@ -78,7 +78,7 @@ int getBetOrQuitFromUser(int &account) {
             return bet;
         }
         if (bet <= 0)
-            invalidInput("you can't bet 0");
+            invalidInput("you can't bet 0 or less");
         else 
             invalidInput("you only have " + to_string(account) + " in your account");
     }
