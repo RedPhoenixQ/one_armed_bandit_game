@@ -46,12 +46,10 @@ int getDepositFromUser() {
         case 2: return 300;
         case 3: return 500;
         default:
-            if (choice < 1) {
+            if (choice < 1) 
                 invalidInput("number too low");
-            }
-            else if (choice > 3) {
+            else if (choice > 3) 
                 invalidInput("number too high");
-            }
         }
     }
 }
@@ -148,11 +146,28 @@ int calculateWinings(int bet, int wining_rows) {
 }
 
 void displayField(char game_field[3][3], WiningRows wining_rows) {
+    /*  Example outputs:
+        --- --- ---
+        | O | O | X |
+        --- ---/---
+        | O | X | O |
+        ---/--- ---
+        | X-|-X-|-X |
+        --- --- ---
+
+        --- --- ---
+        | X | O | O |
+        -|-\--- ---
+        | X | X | O |
+        -|- ---\---
+        | X | O | X |
+        --- --- ---     */
     string current_row;
     string row_divider;
     string column_divider;
 
     // An array for the spaces between the row_dividers. This is initialized outside the loop to minimize comparisons done within the big loop below
+    // This array does not change the leftmost or bottommost layers in the displayed gamefield and needs to be 3x3 to simplify the big loop below, without comparisons
     char center_dividers[3][3] = {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
@@ -174,8 +189,7 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
             "/" " "     */
     }
 
-    for (int x = 0; x < 3; x++)
-    {
+    for (int x = 0; x < 3; x++) {
         column_divider = " | ";
         // If this row is a win, change the divider to indicate that
         if (wining_rows.rows[x])
@@ -187,21 +201,18 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         for (int y = 0; y < 3; y++)
         {
             // Connect vertically if the column is a win and it's not the top row_divider
-            if (wining_rows.columns[y] && x > 0){
+            if (wining_rows.columns[y] && x > 0)
                 row_divider += "-|-";
-            }
-            else {
+            else
                 row_divider += "---";
-            }
 
             row_divider += center_dividers[x][y];
 
-            if (y == 0) {
+            if (y == 0)
                 current_row += "| ";
-            }
-            else {
+            else
                 current_row += column_divider;
-            }
+
             current_row += game_field[x][y];
         }
         // Print the row divider and then the current row on a new line
@@ -210,24 +221,6 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         }
         // Close the game field with a row divider
         cout << " --- --- --- " << endl;
-
-        /*
-          --- --- ---
-         | O | O | X |
-          --- ---/---
-         | O | X | O |
-          ---/--- ---
-         | X-|-X-|-X |
-          --- --- ---
-
-          --- --- ---
-         | X | O | O |
-          -|-\--- ---
-         | X | X | O |
-          -|- ---\---
-         | X | O | X |
-          --- --- ---
-        */
     }
 
 void displayAccount(int account) {
