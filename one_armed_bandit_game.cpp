@@ -137,6 +137,7 @@ int calculateWinings(int bet, int wining_rows) {
     case 3: return bet * 4;
     case 4: return bet * 5;
     case 5: return bet * 7;
+    case 6: return bet * 8;
     default: return bet * 10;
     }
 }
