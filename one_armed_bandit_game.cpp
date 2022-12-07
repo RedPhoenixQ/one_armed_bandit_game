@@ -81,18 +81,18 @@ int getBetOrQuitFromUser(int &account) {
     }
 }
 
-void rollField(char gf[3][3]) {
+void rollField(char game_field[3][3]) {
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
             switch (rand() % 3) {
                 case 0:
-                    gf[x][y] = 'A';
+                    game_field[x][y] = 'A';
                     break;
                 case 1:
-                    gf[x][y] = 'O';
+                    game_field[x][y] = 'O';
                     break;
                 case 2:
-                    gf[x][y] = 'X';
+                    game_field[x][y] = 'X';
                     break;
             }
         }
@@ -100,28 +100,28 @@ void rollField(char gf[3][3]) {
     }
 }
 
-WiningRows countWinningRows(char gf[3][3]) {
+WiningRows countWinningRows(char game_field[3][3]) {
     WiningRows wining_rows;
     for (int i = 0; i < 3; i++) {
         // Check rows
-        if (gf[i][0] == gf[i][1] && gf[i][0] == gf[i][2]) {
+        if (game_field[i][0] == game_field[i][1] && game_field[i][0] == game_field[i][2]) {
             wining_rows.rows[i] = true;
             wining_rows.total++;
         };
         // Check columns
-        if (gf[0][i] == gf[1][i] && gf[0][i] == gf[2][i]) {
+        if (game_field[0][i] == game_field[1][i] && game_field[0][i] == game_field[2][i]) {
             wining_rows.columns[i] = true;
             wining_rows.total++;
         };
     }
-    char center = gf[1][1];
+    char center = game_field[1][1];
     // Checks diagonal top-left to bottom-right (\)
-    if (center == gf[0][0] && center == gf[2][2]) {
+    if (center == game_field[0][0] && center == game_field[2][2]) {
         wining_rows.down = true;
         wining_rows.total++;
     };
     // Checks diagonal bottom-left to top-right (/)
-    if (center == gf[2][0] && center == gf[0][2]) {
+    if (center == game_field[2][0] && center == game_field[0][2]) {
         wining_rows.up = true;
         wining_rows.total++;
     };
@@ -142,7 +142,7 @@ int calculateWinings(int bet, int wining_rows) {
     }
 }
 
-void displayField(char gf[3][3], WiningRows wining_rows) {
+void displayField(char game_field[3][3], WiningRows wining_rows) {
     string current_row;
     string row_divider;
     string column_divider;
@@ -197,7 +197,7 @@ void displayField(char gf[3][3], WiningRows wining_rows) {
             else {
                 current_row += column_divider;
             }
-            current_row += gf[x][y];
+            current_row += game_field[x][y];
         }
         // Print the row divider and then the current row on a new line
         cout << row_divider << endl
