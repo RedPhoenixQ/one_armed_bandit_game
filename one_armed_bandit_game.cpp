@@ -145,66 +145,84 @@ void displayField(char gf[3][3], WiningRows wining_rows) {
     string current_row;
     string row_divider;
     string column_divider;
-    for (int x = 0; x < 3; x++) {
+
+    // An array for the spaces between the row_dividers. This is initialized outside the loop to minimize comparisons done within the big loop below
+    char center_dividers[3][3] = {
+        {' ', ' ', ' '},
+        {' ', ' ', ' '},
+        {' ', ' ', ' '},
+    };
+    // If the is a wining diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
+    if (wining_rows.down) {
+        center_dividers[1][0] = '\\';
+        center_dividers[2][1] = '\\';
+        /*  Would add this to the center of the field
+            "\" " "
+            " " "\"     */
+    }
+    if (wining_rows.up) {
+        center_dividers[1][1] = '/';
+        center_dividers[2][0] = '/';
+        /*  Would add this to the center of the field
+            " " "/"
+            "/" " "     */
+    }
+
+    for (int x = 0; x < 3; x++)
+    {
         column_divider = " | ";
+        // If this row is a win, change the divider to indicate that
         if (wining_rows.rows[x])
-            column_divider = "-|-";
+                column_divider = "-|-";
         current_row = "";
+        // start the row_divider with a space to align it with the columns in the output
         row_divider = " ";
         // For every row, build the current_row and row_divider with the necessary connecting versions
-        for (int y = 0; y < 3; y++) {
+        for (int y = 0; y < 3; y++)
+        {
             // Connect vertically if the column is a win and it's not the top row_divider
-            if (wining_rows.columns[y] && x > 0) {
+            if (wining_rows.columns[y] && x > 0){
                 row_divider += "-|-";
-            } else {
+            }
+            else {
                 row_divider += "---";
             }
 
-            // If there is a wining diagonal, but a / or \ in the necessary locations to connect the diagonals
-            /*
-            Would add this to the center of the field
-            " " "/"
-            "/" " "
-            */
-            if (wining_rows.down && ((y == 0 && x == 1) || (y == 1 && x == 2))) {
-                row_divider += '\\';
-            } else if (wining_rows.up && ((y == 1 && x == 1) || (y == 0 && x == 2))) {
-                row_divider += '/';
-            } else {
-                row_divider += ' ';
-            }
+            row_divider += center_dividers[x][y];
 
             if (y == 0) {
                 current_row += "| ";
-            } else {
+            }
+            else {
                 current_row += column_divider;
             }
             current_row += gf[x][y];
         }
         // Print the row divider and then the current row on a new line
-        cout << row_divider << endl << current_row + " |" << endl;
+        cout << row_divider << endl
+                << current_row + " |" << endl;
+        }
+        // Close the game field with a row divider
+        cout << " --- --- --- " << endl;
+
+        /*
+          --- --- ---
+         | O | O | X |
+          --- ---/---
+         | O | X | O |
+          ---/--- ---
+         | X-|-X-|-X |
+          --- --- ---
+
+          --- --- ---
+         | X | O | O |
+          -|-\--- ---
+         | X | X | O |
+          -|- ---\---
+         | X | O | X |
+          --- --- ---
+        */
     }
-    // Close the game field with a row divider
-    cout << " --- --- --- " << endl;
-
-    /*
-      --- --- ---
-     | O | O | X |
-      --- ---/---
-     | O | X | O |
-      ---/--- ---
-     | X-|-X-|-X |
-      --- --- ---
-
-      --- --- ---
-     | X | O | O |
-      -|-\--- ---
-     | X | X | O |
-      -|- ---\---
-     | X | O | X |
-      --- --- ---
-    */
-}
 
 void displayAccount(int account) {
     cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
