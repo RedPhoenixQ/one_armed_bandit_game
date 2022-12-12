@@ -10,7 +10,7 @@ int main() {
     srand(time(0));
     char game_field[3][3];
     int account = getDepositFromUser();
-    cout << "You have  " + BOLD << account << NOBOLD + "kr" << endl;
+    cout << "You have  " + BOLD << account << NOBOLD + "kr in your account" << endl;
 
     // Main game loop 
     while (true) {
