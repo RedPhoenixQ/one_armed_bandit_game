@@ -15,6 +15,7 @@ int main() {
     // Main game loop 
     while (true) {
         int bet = getBetOrQuitFromUser(account);
+        // Exit the program if the quit code was recived from the user
         if (bet == QUIT_CODE)
             return 0;
         rollField(game_field);
