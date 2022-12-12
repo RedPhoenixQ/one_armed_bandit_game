@@ -10,12 +10,12 @@ int main() {
     srand(time(0));
     char game_field[3][3];
     int account = getDepositFromUser();
-    displayAccount(account);
+    cout << "You have  " + BOLD << account << NOBOLD + "kr" << endl;
 
     // Main game loop 
     while (true) {
         int bet = getBetOrQuitFromUser(account);
-        if (bet == 0)
+        if (bet == QUIT_CODE)
             return 0;
         rollField(game_field);
         WiningRows wining_rows = countWinningRows(game_field);
@@ -24,7 +24,13 @@ int main() {
         if (winings > 0)
             account += winings;
         displayField(game_field, wining_rows);
-        displayWinnings(winings, account);
+        displayWinnings(winings);
+        if (account > 0)
+            cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
+        else {
+            cout << "You have gone bankrupt, please come back another time!";
+            return 0;
+        }
     }
 }
 
@@ -62,9 +68,9 @@ int getBetOrQuitFromUser(int &account) {
         catch(...) {
             // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
             if (input == "quit" || input == "Quit" || input == "q" || input == "Q")
-                return 0;
-            else
-                continue;
+                return QUIT_CODE;
+            invalidInput();
+            continue;
         }
         
         if (bet <= 0) {
@@ -117,12 +123,12 @@ WiningRows countWinningRows(char game_field[3][3]) {
     char center = game_field[1][1];
     // Checks diagonal top-left to bottom-right (\)
     if (center == game_field[0][0] && center == game_field[2][2]) {
-        wining_rows.down = true;
+        wining_rows.top_to_bottom = true;
         wining_rows.total++;
     };
     // Checks diagonal bottom-left to top-right (/)
     if (center == game_field[2][0] && center == game_field[0][2]) {
-        wining_rows.up = true;
+        wining_rows.bottom_to_top = true;
         wining_rows.total++;
     };
     return wining_rows;
@@ -144,21 +150,21 @@ int calculateWinings(int bet, int wining_rows) {
 
 void displayField(char game_field[3][3], WiningRows wining_rows) {
     /*  Example outputs:
-        --- --- ---
+         --- --- ---
         | O | O | X |
-        --- ---/---
+         --- ---/---
         | O | X | O |
-        ---/--- ---
+         ---/--- ---
         | X-|-X-|-X |
-        --- --- ---
+         --- --- ---
 
-        --- --- ---
+         --- --- ---
         | X | O | O |
-        -|-\--- ---
+         -|-\--- ---
         | X | X | O |
-        -|- ---\---
+         -|- ---\---
         | X | O | X |
-        --- --- ---     */
+         --- --- ---     */
     string current_row;
     string row_divider;
     string column_divider;
@@ -171,14 +177,14 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         {' ', ' ', ' '},
     };
     // If the is a wining diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
-    if (wining_rows.down) {
+    if (wining_rows.top_to_bottom) {
         center_dividers[1][0] = '\\';
         center_dividers[2][1] = '\\';
         /*  Would add this to the center of the field
             "\" " "
             " " "\"     */
     }
-    if (wining_rows.up) {
+    if (wining_rows.bottom_to_top) {
         center_dividers[1][1] = '/';
         center_dividers[2][0] = '/';
         /*  Would add this to the center of the field
@@ -220,11 +226,7 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         cout << " --- --- --- " << endl;
     }
 
-void displayAccount(int account) {
-    cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
-}
-
-void displayWinnings(int winings, int account) {
+void displayWinnings(int winings) {
     string won_lost = "won";
     if (winings <= 0) {
         won_lost = "lost";
@@ -232,7 +234,6 @@ void displayWinnings(int winings, int account) {
         winings = -winings;
     }
     cout << "You " << BOLD + won_lost + NOBOLD + ' ' << winings << "kr" << endl;
-    displayAccount(account);
 }
 
 void askQuestion(string question, string &output) {
