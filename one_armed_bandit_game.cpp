@@ -14,10 +14,8 @@ int main() {
 
     // Main game loop 
     while (true) {
-        int bet = getBetOrQuitFromUser(account);
+        int bet = getBetFromUser(account);
         // Exit the program if the quit code was recived from the user
-        if (bet == QUIT_CODE)
-            return 0;
         rollField(game_field);
         WiningRows wining_rows = countWinningRows(game_field);
         int winings = calculateWinings(bet, wining_rows.total);
@@ -57,7 +55,7 @@ int getDepositFromUser() {
     }
 }
 
-int getBetOrQuitFromUser(int &account) {
+int getBetFromUser(int &account) {
     string input;
     int bet;
     while (true) {
@@ -68,7 +66,7 @@ int getBetOrQuitFromUser(int &account) {
         } catch(...) {
             // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
             if (input == "quit" || input == "Quit" || input == "q" || input == "Q")
-                return QUIT_CODE;
+                exit(0);
             invalidInput();
             continue;
         }
@@ -90,18 +88,17 @@ void rollField(char game_field[3][3]) {
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
             switch (rand() % 3) {
-                case 0:
-                    game_field[x][y] = 'A';
-                    break;
-                case 1:
-                    game_field[x][y] = 'O';
-                    break;
-                case 2:
-                    game_field[x][y] = 'X';
-                    break;
+            case 0:
+                game_field[x][y] = 'A';
+                break;
+            case 1:
+                game_field[x][y] = 'O';
+                break;
+            case 2:
+                game_field[x][y] = 'X';
+                break;
             }
-        }
-        
+        }  
     }
 }
 
@@ -143,7 +140,7 @@ int calculateWinings(int bet, int wining_rows) {
     case 3: return bet * 4;
     case 4: return bet * 5;
     case 5: return bet * 7;
-    case 6: return bet * 8;
+    case 6: return bet * 8; // Not part of the specification, but 6 winning rows had to be handeled
     default: return bet * 10;
     }
 }

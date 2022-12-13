@@ -6,8 +6,6 @@ const string BOLD = "\e[1m",
              NOBOLD = "\e[0m",
              ENDL = "\n";
 
-const int QUIT_CODE = -1337;
-
 struct WiningRows {
     bool rows[3] = {false, false, false};
     bool columns[3] = {false, false, false};
@@ -17,7 +15,7 @@ struct WiningRows {
 };;
 
 int getDepositFromUser();
-int getBetOrQuitFromUser(int&);
+int getBetFromUser(int&);
 void rollField(char[3][3]);
 WiningRows countWinningRows(char[3][3]);
 int calculateWinings(int, int);
