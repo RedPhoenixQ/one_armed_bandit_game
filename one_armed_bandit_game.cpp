@@ -74,15 +74,15 @@ int getBetOrQuitFromUser(int &account) {
             continue;
         }
         
-        if (bet <= 0) {
+        if (bet <= 0)
             invalidInput("you can't bet 0 or less");
-            continue;
-        } else if (bet <= account) {
+        else if (bet > account)
+            invalidInput("you only have " + to_string(account) + " in your account");
+        else  {
             // If bet is smaller than account, remove bet from account to "spend" the money
             account -= bet;
             return bet;
-        } else 
-            invalidInput("you only have " + to_string(account) + " in your account");
+        } 
     }
 }
 
