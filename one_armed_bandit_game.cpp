@@ -65,8 +65,7 @@ int getBetOrQuitFromUser(int &account) {
 
         try {
             bet = stoi(input);
-        }
-        catch(...) {
+        } catch(...) {
             // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
             if (input == "quit" || input == "Quit" || input == "q" || input == "Q")
                 return QUIT_CODE;
@@ -248,7 +247,7 @@ void askQuestion(string question, int &output) {
         askQuestion(question, answer);
         try {
             output = stoi(answer.c_str());
-            break;
+            return;
         } catch (...) {
             invalidInput("please input a number");
         }
