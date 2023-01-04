@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <ctime>
 #include "one_armed_bandit_game.h"
 
@@ -27,7 +26,7 @@ int main() {
         if (account > 0)
             cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
         else {
-            cout << "You have gone bankrupt, please come back another time!";
+            cout << "You have gone bankrupt, please come back another time!" << endl;
             return 0;
         }
     }
@@ -56,20 +55,9 @@ int getDepositFromUser() {
 }
 
 int getBetFromUser(int &account) {
-    string input;
     int bet;
     while (true) {
-        askQuestion("How much do you want to bet? [number OR [q]uit]", input);
-
-        try {
-            bet = stoi(input);
-        } catch(...) {
-            // If the user wants to quit, the code 0 will be returned. It is not possible to send a bet of 0
-            if (input == "quit" || input == "Quit" || input == "q" || input == "Q")
-                exit(0);
-            invalidInput();
-            continue;
-        }
+        askQuestion("How much do you want to bet? [number OR [q]uit]", bet);
         
         if (bet <= 0)
             invalidInput("you can't bet 0 or less");
@@ -236,6 +224,10 @@ void displayWinnings(int winings) {
 void askQuestion(string question, string &output) {
     cout << question << endl << ": ";
     cin >> output;
+
+    // If the user wants to quit, exit the application
+    if (output == "quit" || output == "q")
+        exit(0);
 }
 
 void askQuestion(string question, int &output) {
