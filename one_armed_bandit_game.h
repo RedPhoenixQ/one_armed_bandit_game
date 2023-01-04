@@ -6,7 +6,7 @@ const string BOLD = "\e[1m",
              NOBOLD = "\e[0m",
              ENDL = "\n";
 
-struct WiningRows {
+struct WinningRows {
     bool rows[3] = {false, false, false};
     bool columns[3] = {false, false, false};
     bool bottom_to_top = false;
@@ -17,9 +17,9 @@ struct WiningRows {
 int getDepositFromUser();
 int getBetFromUser(int&);
 void rollField(char[3][3]);
-WiningRows countWinningRows(char[3][3]);
-int calculateWinings(int, int);
-void displayField(char[3][3], WiningRows);
+WinningRows countWinningRows(char[3][3]);
+int calculateWinnings(int, int);
+void displayField(char[3][3], WinningRows);
 void displayWinnings(int);
 void askQuestion(string, string&);
 void askQuestion(string, int&);

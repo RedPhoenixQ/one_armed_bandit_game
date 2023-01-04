@@ -16,12 +16,12 @@ int main() {
         int bet = getBetFromUser(account);
         // Exit the program if the quit code was recived from the user
         rollField(game_field);
-        WiningRows wining_rows = countWinningRows(game_field);
-        int winnings = calculateWinnings(bet, wining_rows.total);
+        WinningRows winning_rows = countWinningRows(game_field);
+        int winnings = calculateWinnings(bet, winning_rows.total);
         // Only add the winnings to account if you won something, the "loses" (negative numbers) will be displayed by displayWinnings()
         if (winnings > 0)
             account += winnings;
-        displayField(game_field, wining_rows);
+        displayField(game_field, winning_rows);
         displayWinnings(winnings);
         if (account > 0)
             cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
@@ -90,38 +90,38 @@ void rollField(char game_field[3][3]) {
     }
 }
 
-WiningRows countWinningRows(char game_field[3][3]) {
-    WiningRows wining_rows;
+WinningRows countWinningRows(char game_field[3][3]) {
+    WinningRows winning_rows;
     // Only loops three times since the game_field is 3x3 in size, which means we can check one row amd one column on every iteration thus we only need three iterations
     for (int i = 0; i < 3; i++) {
         // Check rows
         if (game_field[i][0] == game_field[i][1] && game_field[i][0] == game_field[i][2]) {
-            wining_rows.rows[i] = true;
-            wining_rows.total++;
+            winning_rows.rows[i] = true;
+            winning_rows.total++;
         };
         // Check columns
         if (game_field[0][i] == game_field[1][i] && game_field[0][i] == game_field[2][i]) {
-            wining_rows.columns[i] = true;
-            wining_rows.total++;
+            winning_rows.columns[i] = true;
+            winning_rows.total++;
         };
     }
     char center = game_field[1][1];
     // Checks diagonal top-left to bottom-right (\)
     if (center == game_field[0][0] && center == game_field[2][2]) {
-        wining_rows.top_to_bottom = true;
-        wining_rows.total++;
+        winning_rows.top_to_bottom = true;
+        winning_rows.total++;
     };
     // Checks diagonal bottom-left to top-right (/)
     if (center == game_field[2][0] && center == game_field[0][2]) {
-        wining_rows.bottom_to_top = true;
-        wining_rows.total++;
+        winning_rows.bottom_to_top = true;
+        winning_rows.total++;
     };
-    return wining_rows;
+    return winning_rows;
 }
 
-int calculateWinnings(int bet, int wining_rows) {
+int calculateWinnings(int bet, int winning_rows) {
     // Only the options up until six are checked because those are the only possible options unless the entire game field is the same symbol, which would be handeled by the default case
-    switch (wining_rows) {
+    switch (winning_rows) {
     case 0: return -bet;
     case 1: return bet * 2;
     case 2: return bet * 3;
@@ -133,7 +133,7 @@ int calculateWinnings(int bet, int wining_rows) {
     }
 }
 
-void displayField(char game_field[3][3], WiningRows wining_rows) {
+void displayField(char game_field[3][3], WinningRows winning_rows) {
     /*  Example outputs:
          --- --- ---
         | O | O | X |
@@ -161,15 +161,15 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         {' ', ' ', ' '},
         {' ', ' ', ' '},
     };
-    // If the is a wining diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
-    if (wining_rows.top_to_bottom) {
+    // If the is a winning diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
+    if (winning_rows.top_to_bottom) {
         center_dividers[1][0] = '\\';
         center_dividers[2][1] = '\\';
         /*  Would add this to the center of the field
             "\" " "
             " " "\"     */
     }
-    if (wining_rows.bottom_to_top) {
+    if (winning_rows.bottom_to_top) {
         center_dividers[1][1] = '/';
         center_dividers[2][0] = '/';
         /*  Would add this to the center of the field
@@ -180,7 +180,7 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
     for (int x = 0; x < 3; x++) {
         column_divider = " | ";
         // If this row is a win, change the divider to indicate that
-        if (wining_rows.rows[x])
+        if (winning_rows.rows[x])
                 column_divider = "-|-";
         current_row = "";
         // start the row_divider with a space to align it with the columns in the output
@@ -189,7 +189,7 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         for (int y = 0; y < 3; y++)
         {
             // Connect vertically if the column is a win and it's not the top row_divider
-            if (wining_rows.columns[y] && x > 0)
+            if (winning_rows.columns[y] && x > 0)
                 row_divider += "-|-";
             else
                 row_divider += "---";
