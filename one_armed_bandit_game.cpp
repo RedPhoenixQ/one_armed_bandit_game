@@ -17,12 +17,12 @@ int main() {
         // Exit the program if the quit code was recived from the user
         rollField(game_field);
         WiningRows wining_rows = countWinningRows(game_field);
-        int winings = calculateWinings(bet, wining_rows.total);
-        // Only add the winnings to account if you won something, the "loses" (negative numbers) will be displayed by displayWinings()
-        if (winings > 0)
-            account += winings;
+        int winnings = calculateWinnings(bet, wining_rows.total);
+        // Only add the winnings to account if you won something, the "loses" (negative numbers) will be displayed by displayWinnings()
+        if (winnings > 0)
+            account += winnings;
         displayField(game_field, wining_rows);
-        displayWinnings(winings);
+        displayWinnings(winnings);
         if (account > 0)
             cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
         else {
@@ -119,7 +119,7 @@ WiningRows countWinningRows(char game_field[3][3]) {
     return wining_rows;
 }
 
-int calculateWinings(int bet, int wining_rows) {
+int calculateWinnings(int bet, int wining_rows) {
     // Only the options up until six are checked because those are the only possible options unless the entire game field is the same symbol, which would be handeled by the default case
     switch (wining_rows) {
     case 0: return -bet;
@@ -211,14 +211,14 @@ void displayField(char game_field[3][3], WiningRows wining_rows) {
         cout << " --- --- --- " << endl;
     }
 
-void displayWinnings(int winings) {
+void displayWinnings(int winnings) {
     string won_lost = "won";
-    if (winings <= 0) {
+    if (winnings <= 0) {
         won_lost = "lost";
-        // Invert the winings variable so that "-XXX" isn't shown to the user
-        winings = -winings;
+        // Invert the winnings variable so that "-XXX" isn't shown to the user
+        winnings = -winnings;
     }
-    cout << "You " << BOLD + won_lost + NOBOLD + ' ' << winings << "kr" << endl;
+    cout << "You " << BOLD + won_lost + NOBOLD + ' ' << winnings << "kr" << endl;
 }
 
 void askQuestion(string question, string &output) {
