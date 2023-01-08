@@ -14,7 +14,6 @@ int main() {
     // Main game loop 
     while (true) {
         int bet = getBetFromUser(account);
-        // Exit the program if the quit code was recived from the user
         rollField(game_field);
         WinningRows winning_rows = countWinningRows(game_field);
         int winnings = calculateWinnings(bet, winning_rows.total);
@@ -72,7 +71,7 @@ int getBetFromUser(int &account) {
 }
 
 void rollField(char game_field[3][3]) {
-    // Generata a random number for every index in game_field and choose one of three options based on the random number to become the value at that index
+    // Generate a random number for every index in game_field and choose one of three options based on the random number to become the value at that index
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {
             switch (rand() % 3) {
@@ -92,7 +91,7 @@ void rollField(char game_field[3][3]) {
 
 WinningRows countWinningRows(char game_field[3][3]) {
     WinningRows winning_rows;
-    // Only loops three times since the game_field is 3x3 in size, which means we can check one row amd one column on every iteration thus we only need three iterations
+    // Only loops three times since the game_field is 3x3 in size, which means we can check one row and one column on every iteration, thus we only need three iterations
     for (int i = 0; i < 3; i++) {
         // Check rows
         if (game_field[i][0] == game_field[i][1] && game_field[i][0] == game_field[i][2]) {
@@ -120,7 +119,7 @@ WinningRows countWinningRows(char game_field[3][3]) {
 }
 
 int calculateWinnings(int bet, int winning_rows) {
-    // Only the options up until six are checked because those are the only possible options unless the entire game field is the same symbol, which would be handeled by the default case
+    // Only the options up until six are checked because those are the only possible options unless the entire game field is the same symbol, which would be handled by the default case
     switch (winning_rows) {
     case 0: return -bet;
     case 1: return bet * 2;
@@ -128,7 +127,7 @@ int calculateWinnings(int bet, int winning_rows) {
     case 3: return bet * 4;
     case 4: return bet * 5;
     case 5: return bet * 7;
-    case 6: return bet * 8; // Not part of the specification, but 6 winning rows had to be handeled
+    case 6: return bet * 8; // Not part of the specification, but 6 winning rows had to be handled
     default: return bet * 10;
     }
 }
