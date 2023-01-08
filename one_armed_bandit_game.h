@@ -12,7 +12,7 @@ struct WinningRows {
     bool bottom_to_top = false;
     bool top_to_bottom = false;
     int total = 0;
-};;
+};
 
 int getDepositFromUser();
 int getBetFromUser(int&);

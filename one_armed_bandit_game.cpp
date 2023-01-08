@@ -131,21 +131,21 @@ int calculateWinnings(int bet, int winning_rows) {
 
 void displayField(char game_field[3][3], WinningRows winning_rows) {
     /*  Example outputs:
-         --- --- ---
+        +---+---+---+
         | O | O | X |
-         --- ---/---
+        +---+---/---+
         | O | X | O |
-         ---/--- ---
+        +---/---+---+
         | X-|-X-|-X |
-         --- --- ---
+        +---+---+---+
 
-         --- --- ---
+        +---+---+---+
         | X | O | O |
-         -|-\--- ---
+        +-|-\---+---+
         | X | X | O |
-         -|- ---\---
+        +-|-+---\---+
         | X | O | X |
-         --- --- ---     */
+        +---+---+---+   */
     string current_row;
     string row_divider;
     string column_divider;
@@ -153,9 +153,9 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
     // An array for the spaces between the row_dividers. This is initialized outside the loop to minimize comparisons done within the big loop below
     // This array does not change the leftmost or bottommost layers in the displayed gamefield and needs to be 3x3 to simplify the big loop below, without comparisons
     char center_dividers[3][3] = {
-        {' ', ' ', ' '},
-        {' ', ' ', ' '},
-        {' ', ' ', ' '},
+        {'+', '+', '+'},
+        {'+', '+', '+'},
+        {'+', '+', '+'},
     };
     // If the is a winning diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
     if (winning_rows.top_to_bottom) {
@@ -180,7 +180,7 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
                 column_divider = "-|-";
         current_row = "";
         // start the row_divider with a space to align it with the columns in the output
-        row_divider = " ";
+        row_divider = "+";
         // For every row, build the current_row and row_divider with the necessary connecting versions
         for (int y = 0; y < 3; y++)
         {
@@ -204,7 +204,7 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
                 << current_row + " |" << endl;
         }
         // Close the game field with a row divider
-        cout << " --- --- --- " << endl;
+        cout << "+---+---+---+" << endl;
     }
 
 void displayWinnings(int winnings) {
