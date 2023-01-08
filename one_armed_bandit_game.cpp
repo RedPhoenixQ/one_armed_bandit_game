@@ -11,8 +11,8 @@ int main() {
     int account = getDepositFromUser();
     cout << "You have  " + BOLD << account << NOBOLD + "kr in your account" << endl;
 
-    // Main game loop 
-    while (true) {
+    // Main game loop
+    while (account > 0) {
         int bet = getBetFromUser(account);
         rollField(game_field);
         WinningRows winning_rows = countWinningRows(game_field);
@@ -22,13 +22,10 @@ int main() {
             account += winnings;
         displayField(game_field, winning_rows);
         displayWinnings(winnings);
-        if (account > 0)
-            cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
-        else {
-            cout << "You have gone bankrupt, please come back another time!" << endl;
-            return 0;
-        }
+        cout << "Account " + BOLD << account << NOBOLD + "kr" << endl;
     }
+    cout << "You have gone bankrupt, please come back another time!" << endl;
+    return 0;
 }
 
 int getDepositFromUser() {
