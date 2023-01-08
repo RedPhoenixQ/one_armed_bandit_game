@@ -150,29 +150,6 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
     string row_divider;
     string column_divider;
 
-    // An array for the spaces between the row_dividers. This is initialized outside the loop to minimize comparisons done within the big loop below
-    // This array does not change the leftmost or bottommost layers in the displayed gamefield and needs to be 3x3 to simplify the big loop below, without comparisons
-    char center_dividers[3][3] = {
-        {'+', '+', '+'},
-        {'+', '+', '+'},
-        {'+', '+', '+'},
-    };
-    // If the is a winning diagonal, change the corresponding center_dividers to add the diagonals lines to indicate that
-    if (winning_rows.top_to_bottom) {
-        center_dividers[1][0] = '\\';
-        center_dividers[2][1] = '\\';
-        /*  Would add this to the center of the field
-            "\" " "
-            " " "\"     */
-    }
-    if (winning_rows.bottom_to_top) {
-        center_dividers[1][1] = '/';
-        center_dividers[2][0] = '/';
-        /*  Would add this to the center of the field
-            " " "/"
-            "/" " "     */
-    }
-
     for (int x = 0; x < 3; x++) {
         column_divider = " | ";
         // If this row is a win, change the divider to indicate that
@@ -189,9 +166,17 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
                 row_divider += "-|-";
             else
                 row_divider += "---";
+            
+            // Adds diagonals to the center of the board if the are a winning row
+            if (winning_rows.bottom_to_top && ((x == 1 && y == 1) || (x == 2 && y == 0)))
+                row_divider += "/";
+            else if (winning_rows.top_to_bottom && ((x == 1 && y == 0) || (x == 2 && y == 1)))
+                row_divider += "\\";
+            else
+                // adds the standard "+" if there are no other diagonals to mark out
+                row_divider += "+";
 
-            row_divider += center_dividers[x][y];
-
+            // Handles the leftmost line of the game field
             if (y == 0)
                 current_row += "| ";
             else
@@ -199,7 +184,7 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
 
             current_row += game_field[x][y];
         }
-        // Print the row divider and then the current row on a new line
+        // Print the row divider and then the current row + the rightmost line of the field on a new line
         cout << row_divider << endl
                 << current_row + " |" << endl;
         }
