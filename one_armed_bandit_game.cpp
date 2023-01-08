@@ -159,8 +159,7 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
         // start the row_divider with a space to align it with the columns in the output
         row_divider = "+";
         // For every row, build the current_row and row_divider with the necessary connecting versions
-        for (int y = 0; y < 3; y++)
-        {
+        for (int y = 0; y < 3; y++) {
             // Connect vertically if the column is a win and it's not the top row_divider
             if (winning_rows.columns[y] && x > 0)
                 row_divider += "-|-";
@@ -187,10 +186,10 @@ void displayField(char game_field[3][3], WinningRows winning_rows) {
         // Print the row divider and then the current row + the rightmost line of the field on a new line
         cout << row_divider << endl
                 << current_row + " |" << endl;
-        }
-        // Close the game field with a row divider
-        cout << "+---+---+---+" << endl;
     }
+    // Close the game field with a row divider
+    cout << "+---+---+---+" << endl;
+}
 
 void displayWinnings(int winnings) {
     string won_lost = "won";
